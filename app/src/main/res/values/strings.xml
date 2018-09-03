@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ausgaben4</string>
+    <string name="title">Titel</string>
+    <string name="date">Datum</string>
+    <string name="amount">Preis</string>
+    <string name="enterTitle">Titel eingeben</string>
+    <string name="enterDate">Datum eingeben</string>
+    <string name="enterAmount">Preis eingeben</string>
+    <string name="saveData">Speichern</string>
+</resources>
