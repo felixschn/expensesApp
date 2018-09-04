@@ -42,11 +42,6 @@ public class enterDataActivity extends AppCompatActivity {
         //set the right xml file
         setContentView(R.layout.enterdata_activity);
 
-
-        //link to the xml TextViews
-        enterTitle = findViewById(R.id.enterTitle);
-        enterDate = findViewById(R.id.enterDate);
-        enterAmount = findViewById(R.id.enterAmount);
         //link to the xml EditText
         userEnterTitle = findViewById(R.id.userEnterTitle);
         userEnterDate = findViewById(R.id.userEnterDate);

@@ -1,55 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/enterTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enterTitle" />
 
     <EditText
         android:id="@+id/userEnterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/enterTitle"/>
+        android:hint="@string/enterTitle" />
 
-    <TextView
-        android:id="@+id/enterDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enterDate"
-        android:layout_below="@+id/userEnterTitle"
-        />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/userEnterDate"
-        android:layout_below="@id/enterDate"
-        android:clickable="true"
-        android:editable="false"/>
-
-    <TextView
-        android:id="@+id/enterAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enterAmount"
-        android:layout_below="@id/userEnterDate"
-        />
+        android:layout_below="@id/userEnterTitle"
+        android:clickable="true"
+        android:editable="false"
+        android:hint="@string/enterDate"
+        android:layout_marginTop="35dp"/>
+
 
     <EditText
+        android:id="@+id/userEnterAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/userEnterAmount"
-        android:layout_below="@id/enterAmount"
-        android:inputType="numberDecimal"/>
+        android:layout_below="@id/userEnterDate"
+        android:inputType="numberDecimal"
+        android:hint="@string/enterAmount"
+        android:layout_marginTop="35dp"/>
 
     <Button
         android:id="@+id/saveData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userEnterAmount"
-        android:text="@string/saveData"/>
+        android:layout_marginTop="35dp"
+        android:text="@string/saveData"
+        android:padding="20dp"/>
 </RelativeLayout>
