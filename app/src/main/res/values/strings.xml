@@ -7,4 +7,5 @@
     <string name="enterDate">Datum eingeben</string>
     <string name="enterAmount">Preis eingeben</string>
     <string name="saveData">Speichern</string>
+    <string name="sum">Summe</string>
 </resources>

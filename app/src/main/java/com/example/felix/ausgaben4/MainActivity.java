@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         sumTextView = findViewById(R.id.sum);
         amountTextView = findViewById(R.id.amount);
+        //set the Text of the Sum of all Database entries
+        amountTextView.setText(String.valueOf(sumOfAllItems()));
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,22 +55,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
-    protected  void onActivityResult (int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if(requestCode == REQUEST_ID){
+        if (requestCode == REQUEST_ID) {
             // Make sure the request was successful
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 String retEnteredDataTitle = data.getStringExtra("title");
-                String retEnteredDataDate = data.getStringExtra ("date");
+                String retEnteredDataDate = data.getStringExtra("date");
                 String retEnteredDataAmount = data.getStringExtra("amount");
 
                 System.out.println(retEnteredDataTitle);
                 //TODO convert Date String into Date format
-                addItem(retEnteredDataTitle,retEnteredDataDate,retEnteredDataAmount);
+                addItem(retEnteredDataTitle, retEnteredDataDate, retEnteredDataAmount);
 
             }
 
@@ -83,12 +85,30 @@ public class MainActivity extends AppCompatActivity {
                 , null,
                 null);
     }
-    private void addItem(String titleToString,String dateToString, String amountToString){
+
+    private void addItem(String titleToString, String dateToString, String amountToString) {
         ContentValues cv = new ContentValues();
         cv.put(expensesContract.expensesEntry.COLUMN_TITLE, titleToString);
         cv.put(expensesContract.expensesEntry.COLUMN_DATE, dateToString);
-        cv.put(expensesContract.expensesEntry.COLUMN_AMOUNT,amountToString);
+        cv.put(expensesContract.expensesEntry.COLUMN_AMOUNT, amountToString);
         mDatabase.insert(expensesContract.expensesEntry.TABLE_NAME, null, cv);
         mAdapter.swapCursor(getAllItems());
+    }
+
+    private double sumOfAllItems() {
+        String summenString;
+        //database query to get the Sum of all table entries
+        String query = "SELECT SUM(amount) as newamount FROM expensesList";
+        Cursor cursor = mDatabase.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            //get the String from the Cursor
+            summenString = cursor.getString(cursor.getColumnIndex("newamount"));
+            double castSummeStringToDouble = Double.parseDouble(summenString);
+            return castSummeStringToDouble;
+
+        }
+
+        return 0;
     }
 }
