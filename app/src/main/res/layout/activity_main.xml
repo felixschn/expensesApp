@@ -27,13 +27,18 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="41dp"
-        android:layout_height="wrap_content"
+        android:layout_height="41dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="23dp"
         android:layout_marginEnd="27dp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        app:borderWidth="0dp"
+        android:backgroundTint="@color/colorWhite"
+        android:src="@drawable/ic_add_circle_black_24dp"
+        android:scaleType="center"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"

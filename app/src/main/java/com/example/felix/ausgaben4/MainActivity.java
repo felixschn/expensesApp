@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.TextView;
@@ -37,12 +38,30 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new expensesAdapter(this, getAllItems());
         recyclerView.setAdapter(mAdapter);
 
+        //to swipe and delete entries from the database
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                removeItem((long) viewHolder.itemView.getTag());
+
+
+            }
+        }).attachToRecyclerView(recyclerView);
+
 
         sumTextView = findViewById(R.id.sum);
         amountTextView = findViewById(R.id.amount);
         //set the Text of the Sum of all Database entries
-        amountTextView.setText(String.valueOf(sumOfAllItems()));
-
+        if (getAllItems().getCount() != 0) {
+            amountTextView.setText(String.valueOf(sumOfAllItems()));
+        } else {
+            amountTextView.setText("0");
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(retEnteredDataTitle);
                 //TODO convert Date String into Date format
                 addItem(retEnteredDataTitle, retEnteredDataDate, retEnteredDataAmount);
+                amountTextView.setText(String.valueOf(sumOfAllItems()));
+                //TODO Jedes mal wenn ein neuer Eintrag erstellt wird setzte ich die TextView amountTextView neu, gibt es eine möglichkeit es iwo in der App an einer Zentralen Stelle zu machen und nicht hinter jedem löschen oder hinzufügen einzeln?
+
 
             }
 
@@ -98,17 +120,26 @@ public class MainActivity extends AppCompatActivity {
     private double sumOfAllItems() {
         String summenString;
         //database query to get the Sum of all table entries
-        String query = "SELECT SUM(amount) as newamount FROM expensesList";
-        Cursor cursor = mDatabase.rawQuery(query, null);
+        if (getAllItems().getCount() != 0) {
+            String query = "SELECT SUM(amount) as newamount FROM expensesList";
+            Cursor cursor = mDatabase.rawQuery(query, null);
 
-        if (cursor.moveToFirst()) {
-            //get the String from the Cursor
-            summenString = cursor.getString(cursor.getColumnIndex("newamount"));
-            double castSummeStringToDouble = Double.parseDouble(summenString);
-            return castSummeStringToDouble;
+            if (cursor.moveToFirst()) {
+                //get the String from the Cursor
+                summenString = cursor.getString(cursor.getColumnIndex("newamount"));
+                double castSummeStringToDouble = Double.parseDouble(summenString);
+                return castSummeStringToDouble;
 
+            }
+
+            return 0;
         }
-
         return 0;
     }
-}
+
+        private void removeItem ( long id){
+            mDatabase.delete(expensesContract.expensesEntry.TABLE_NAME, expensesContract.expensesEntry._ID + "=" + id, null);
+            mAdapter.swapCursor(getAllItems());
+            amountTextView.setText(String.valueOf(sumOfAllItems()));
+        }
+    }

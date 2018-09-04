@@ -50,10 +50,12 @@ public class expensesAdapter extends RecyclerView.Adapter<expensesAdapter.expens
         String title = mCursor.getString(mCursor.getColumnIndex(expensesContract.expensesEntry.COLUMN_TITLE));
         String date = mCursor.getString(mCursor.getColumnIndex(expensesContract.expensesEntry.COLUMN_DATE));
         int amount = mCursor.getInt(mCursor.getColumnIndex(expensesContract.expensesEntry.COLUMN_AMOUNT));
-
+        //add ID for the swipe-delete function in the MainActivity, to identifier the right item from the database
+        long id = mCursor.getLong(mCursor.getColumnIndex(expensesContract.expensesEntry._ID));
         holder.titleText.setText(title);
         holder.dateText.setText(date);
         holder.amountText.setText(String.valueOf(amount));
+        holder.itemView.setTag(id);
     }
 
     @Override
